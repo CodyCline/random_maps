@@ -35,7 +35,7 @@ def trim(lat, lon):
 
 
 @app.route("/location")
-def get_location():
+def location():
     seed = quantum_seed()
     print(request.args.get("latitude"), request.args.get("longitude"))
     mean = float(request.args.get("mean"))
