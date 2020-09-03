@@ -155,9 +155,15 @@ export const MapTheme = [
         "stylers": [
             {
                 "color": "#ff6700"
-            },
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
             {
-                "weight": 1
+                "color": "#255763"
             }
         ]
     },
@@ -176,15 +182,6 @@ export const MapTheme = [
         "stylers": [
             {
                 "color": "#023e58"
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#ffdd00"
             }
         ]
     },

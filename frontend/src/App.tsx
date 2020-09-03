@@ -1,39 +1,11 @@
 import * as React from 'react';
-import GoogleMapReact from 'google-map-react';
+import { GoogleMap } from './components/map/map';
 import { Marker } from './components/marker/marker';
 import { Slider } from './components/slider/slider';
-import { AutoCompleter } from './components/input/input';
+import { AutoCompleter } from './components/autocomplete/autocomplete';
 import axios from 'axios';
 import './App.css';
-import { MapTheme } from './components/map/theme';
 
-
-class Map extends React.Component<any, any> {
-	createMapOptions () {
-		return {
-			styles: MapTheme,
-		}
-	}
-	render() {
-		const apiKey: any = process.env.REACT_APP_GOOGLE_MAPS_KEY
-		return (
-			// Important! Always set the container height explicitly
-			<div style={{ height: '100vh', width: '100%' }}>
-				<GoogleMapReact
-					yesIWantToUseGoogleMapApiInternals
-					bootstrapURLKeys={{ key: apiKey, libraries: ["places", "geometry"], }}
-					defaultCenter={this.props.center}
-					center={this.props.center}
-					zoom={this.props.zoom}
-					onGoogleApiLoaded={this.props.onLoad}
-					options={() => this.createMapOptions()}
-				>
-					{this.props.children}
-				</GoogleMapReact>
-			</div>
-		);
-	}
-}
 
 class App extends React.Component<any, any> {
 	state: any = {
@@ -101,31 +73,37 @@ class App extends React.Component<any, any> {
 		})
 	}
 	render() {
-		console.log(this.state.mapApi, "i\n", this.state.mapInstance)
+		const API_KEY :any = process.env.REACT_APP_GOOGLE_MAPS_KEY
 		return (
 			
 			<React.Fragment>
 				<nav style={{ background: "#CCC", height: "100%" }}><h1>NAVBAR</h1></nav>
-				<div style={{ display: "grid", gridTemplateColumns: "minmax(150px,25%)1fr" }}>
-					<div>
-						{this.state.mapApiLoaded && 
-							<AutoCompleter
-							map={this.state.mapInstance} 
-							mapApi={this.state.mapApi} 
-							addPlace={(place:any) => this.setLocation(place)} 
-						/>}
-						<p>Input Location</p>
-						<button onClick={() => this.giveLocation()}>Give Location</button>
-						<button onClick={() => this.getRandomLocation()}>Get Location</button>
+				<div style={{ background: "#232429", display: "grid", gridTemplateColumns: "minmax(150px,25%)1fr" }}>
+					<div style={{padding: "20px"}}>
+						{this.state.mapApiLoaded && <AutoCompleter
+								map={this.state.mapInstance} 
+								mapApi={this.state.mapApi} 
+								placeHolder="City, street or address"
+								label="Enter a location"
+								addPlace={(place:any) => this.setLocation(place)} 
+								onIconClick={() => this.giveLocation()}
+							/>
+						}
 						<Slider
 							min={10.0}
 							max={999.0}
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.setRange(event)}
 							value={this.state.range}
+							label="Set the range"
 						/>
-						<p>{this.state.range}</p>
+						<button onClick={() => this.getRandomLocation()}>Get Location</button>
 					</div>
-					<Map onLoad={({ map, maps }:any) => this.apiHasLoaded(map, maps)} zoom={this.state.zoom} center={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}>
+					<GoogleMap 
+						apiKey={API_KEY}
+						onLoad={({ map, maps }:any) => this.apiHasLoaded(map, maps)} 
+						zoom={this.state.zoom} 
+						center={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}
+					>
 						<Marker
 							text="Your Location"
 							lat={this.state.currentLocation.lat}
@@ -139,7 +117,10 @@ class App extends React.Component<any, any> {
 								lng={this.state.randomLocation.lng}
 							/>
 						}
-					</Map>
+					</GoogleMap>
+				</div>
+				<div style={{height: "200px", background: "#171819"}}>
+					Footer
 				</div>
 			</React.Fragment>
 		)
