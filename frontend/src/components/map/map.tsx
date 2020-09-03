@@ -38,29 +38,3 @@ export const GoogleMap = ({
 }
 
 
-class Map extends React.Component<any, any> {
-    createMapOptions() {
-        return {
-            styles: MapTheme,
-        }
-    }
-    render() {
-        const apiKey: any = process.env.REACT_APP_GOOGLE_MAPS_KEY
-        return (
-            // Important! Always set the container height explicitly
-            <div style={{ height: '100vh', width: '100%' }}>
-                <GoogleMapReact
-                    yesIWantToUseGoogleMapApiInternals
-                    bootstrapURLKeys={{ key: apiKey, libraries: ["places", "geometry"], }}
-                    defaultCenter={this.props.defaultCenter}
-                    center={this.props.center}
-                    zoom={this.props.zoom}
-                    onGoogleApiLoaded={this.props.onLoad}
-                    options={() => this.createMapOptions()}
-                >
-                    {this.props.children}
-                </GoogleMapReact>
-            </div>
-        );
-    }
-}
