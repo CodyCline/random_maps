@@ -1,8 +1,30 @@
+
+
+/* Styling for google maps auto complete */
+
+
+
 .pac-container {
+    margin: 1em 0 1em 0;
+    border-radius: 10px;
     background: #181920;
-    color: white;
+    border-top: none;
+    /* color: white; */
+}
+
+.pac-icon {
+    color: #6C10D1;
 }
 
 .pac-item {
+    color: #CCC;
+}
+
+.pac-item-query {
     color: white;
+}
+
+.pac-item:hover {
+    background: #807e7e;
+    cursor: pointer;
 }

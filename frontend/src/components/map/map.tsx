@@ -10,6 +10,7 @@ export const GoogleMap = ({
     center,
     zoom,
     onLoad,
+    isLoading,
 } :any) => {
     const createMapOptions = () => {
         return {
@@ -17,10 +18,13 @@ export const GoogleMap = ({
         }
     }
     return (
-        <div style={{ height: '100vh', width: '100%' }}>
+        <div style={{ height: "100vh", width: "100%" }}>
             <GoogleMapReact
                 yesIWantToUseGoogleMapApiInternals
-                bootstrapURLKeys={{ key: apiKey, libraries: ["places", "geometry"], }}
+                bootstrapURLKeys={{ 
+                    key: apiKey, 
+                    libraries: ["places", "geometry"], 
+                }}
                 defaultCenter={defaultCenter}
                 center={center}
                 zoom={zoom}

@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { Layout } from './components/layout/layout';
 import { GoogleMap } from './components/map/map';
 import { Marker } from './components/marker/marker';
 import { Slider } from './components/slider/slider';
 import { AutoCompleter } from './components/autocomplete/autocomplete';
+import { Button } from './components/button/button';
 import axios from 'axios';
 import './App.css';
 
@@ -10,7 +12,8 @@ import './App.css';
 class App extends React.Component<any, any> {
 	state: any = {
 		randomLocation: null,
-		currentLocation: { lat: 39.828175, lng: -98.5795 },
+		currentLocation: { lat: 39.828175, lng: -98.5795 }, //Geographic Center of the United States
+		locationHistory: [], //List of random locations
 		zoom: 4,
 		range: 10, //Min max 10k 999k
 		isFetching: false,
@@ -29,12 +32,15 @@ class App extends React.Component<any, any> {
 				randomLocation: null,
 				zoom: 17
 			});
+			this.state.mapInstance.setCenter({
+				...this.state.currentLocation,
+			})
 		}, (error: PositionError) => {
 			console.log("ERROR\n", error);
 		})
 	}
 
-	setLocation (place:any) {
+	setLocation(place: any) {
 		this.setState({
 			currentLocation: {
 				lat: place.geometry.location.lat(),
@@ -43,7 +49,7 @@ class App extends React.Component<any, any> {
 		})
 	}
 
-	apiHasLoaded (map: any, maps: any) {
+	apiHasLoaded(map: any, maps: any) {
 		this.setState({
 			mapApiLoaded: true,
 			mapInstance: map,
@@ -66,6 +72,10 @@ class App extends React.Component<any, any> {
 			},
 			zoom: 17,
 		})
+		this.state.mapInstance.setCenter({
+			lat: res.data.latitude,
+			lng: res.data.longitude,
+		})
 	}
 	setRange(event: React.ChangeEvent<HTMLInputElement>) {
 		this.setState({
@@ -73,21 +83,19 @@ class App extends React.Component<any, any> {
 		})
 	}
 	render() {
-		const API_KEY :any = process.env.REACT_APP_GOOGLE_MAPS_KEY
+		const API_KEY: any = process.env.REACT_APP_GOOGLE_MAPS_KEY
 		return (
-			
-			<React.Fragment>
-				<nav style={{ background: "#CCC", height: "100%" }}><h1>NAVBAR</h1></nav>
-				<div style={{ background: "#232429", display: "grid", gridTemplateColumns: "minmax(150px,25%)1fr" }}>
-					<div style={{padding: "20px"}}>
+			<Layout>
+				<div style={{ background: "#232429", display: "grid", gridTemplateColumns: "minmax(250px,25%)1fr" }}>
+					<div style={{ padding: "20px" }}>
 						{this.state.mapApiLoaded && <AutoCompleter
-								map={this.state.mapInstance} 
-								mapApi={this.state.mapApi} 
-								placeHolder="City, street or address"
-								label="Enter a location"
-								addPlace={(place:any) => this.setLocation(place)} 
-								onIconClick={() => this.giveLocation()}
-							/>
+							map={this.state.mapInstance}
+							mapApi={this.state.mapApi}
+							placeHolder="City, street or address"
+							label="Enter a location"
+							addPlace={(place: any) => this.setLocation(place)}
+							onIconClick={() => this.giveLocation()}
+						/>
 						}
 						<Slider
 							min={10.0}
@@ -96,13 +104,15 @@ class App extends React.Component<any, any> {
 							value={this.state.range}
 							label="Set the range"
 						/>
-						<button onClick={() => this.getRandomLocation()}>Get Location</button>
+						<Button onClick={() => this.getRandomLocation()}>Get Location</Button>
+						
 					</div>
-					<GoogleMap 
+					<GoogleMap
+						//Map center is controlled by the maps api not state
 						apiKey={API_KEY}
-						onLoad={({ map, maps }:any) => this.apiHasLoaded(map, maps)} 
-						zoom={this.state.zoom} 
-						center={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}
+						onLoad={({ map, maps }: any) => this.apiHasLoaded(map, maps)}
+						zoom={10}
+						defaultCenter={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}
 					>
 						<Marker
 							text="Your Location"
@@ -119,10 +129,7 @@ class App extends React.Component<any, any> {
 						}
 					</GoogleMap>
 				</div>
-				<div style={{height: "200px", background: "#171819"}}>
-					Footer
-				</div>
-			</React.Fragment>
+			</Layout>
 		)
 	}
 

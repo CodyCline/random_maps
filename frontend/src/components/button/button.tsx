@@ -1,9 +1,10 @@
 import * as React from 'react';
+import './button.css';
 
-export const Button = ({children} :any) => {
+export const Button = (props :any) => {
     return (
-        <button className="button">
-            {children}
+        <button {...props} className="button">
+            {props.children}
         </button>
     )
 }
