@@ -1,0 +1,68 @@
+.location__list {
+    margin: 0;
+    padding: 0;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.location__item {
+    padding: 0;
+    margin: 1rem 0 1rem 0;
+    padding: 8px 0 8px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    border: 2px solid #CCC;
+    border-radius: 10px;
+
+    font-size: 1.25rem;
+    list-style: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    transition: 0.1s ease-in-out;
+}
+
+.item__active {
+    background: #CCC;
+    color: #000;
+}
+
+.location__item > p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.location__item:hover {
+    cursor:pointer;
+}
+
+.location__item:hover:not(.item__active) {
+    border-color: #6c10d1;
+}
+
+.location__item__icon {
+    height: 1em;
+    width: 1em;
+}
+
+.map__icon {
+    color: green;
+}
+
+.copy__icon {
+    color: #6c10d1;
+}
+
+.marker__icon {
+    color: orange;
+}
+
+/* Style scrollbar for location list */
+.location__list::-webkit-scrollbar {
+    width: 0.25em;
+}
+

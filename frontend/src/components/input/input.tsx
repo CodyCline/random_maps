@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Tooltip} from 'react-tippy';
 import { ReactComponent as Globe } from './globe.svg';
 import './input.css';
 
@@ -8,17 +9,18 @@ export const Input = React.forwardRef((props: any, ref: any) => {
             <label>{props.label}</label>
             <div className="input__block">
                 <input
+                    autoFocus
                     className="input"
                     ref={ref}
                     type="text"
-                    onFocus={props.onFocus}
-                    placeholder={props.placeHolder}
                     value={props.value}
-                    onChange={props.onChange}
                     onBlur={props.onBlur}
-                    autoFocus
+                    onChange={props.onChange}
                 />
-                <Globe onClick={props.onIconClick} className="input__icon" />
+                <Tooltip className="tooltip__override" offset={-20} distance={20} title="Give location" position="top" trigger="mouseenter">
+                    <Globe onClick={props.onIconClick} className="input__icon" />
+                </Tooltip>
+                
             </div>
         </div>
     )

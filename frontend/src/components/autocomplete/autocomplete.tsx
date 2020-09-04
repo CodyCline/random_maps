@@ -2,7 +2,15 @@ import * as React from 'react';
 import { Input } from '../input/input';
 import './autocomplete.css';
 
-export const AutoCompleter = ({ map, mapApi, addPlace, placeHolder, options, label, onIconClick }: any) => {
+export const AutoCompleter = ({ 
+    map, 
+    mapApi, 
+    addPlace, 
+    placeHolder, 
+    options, 
+    label, 
+    onIconClick,
+}: any) => {
     const searchRef = React.useRef<any>(null);
     const infopanelRef = React.useRef<any>(null);
     let autoComplete: any;
@@ -37,7 +45,7 @@ export const AutoCompleter = ({ map, mapApi, addPlace, placeHolder, options, lab
     return (
         <div>
             <Input ref={searchRef}  
-                placeHolder={placeHolder}
+                placeholder={placeHolder}
                 label={label}
                 onIconClick={onIconClick}
             />

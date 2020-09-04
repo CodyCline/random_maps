@@ -30,6 +30,11 @@
     height: 60%; 
     text-align: center;
     cursor: pointer; 
+    transition: 0.5s ease-in-out;
+}
+
+.input__icon:hover {
+    color: greenyellow;
 }
 
 .input::placeholder {
