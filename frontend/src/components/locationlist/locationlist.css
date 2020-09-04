@@ -12,10 +12,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    width: 100%;
+    width: 95%;
     text-align: center;
     align-items: center;
-    border: 2px solid #CCC;
+    border: 2px solid #ccc;
     border-radius: 10px;
 
     font-size: 1.25rem;
@@ -27,7 +27,7 @@
 }
 
 .item__active {
-    background: #CCC;
+    background: #ccc;
     color: #000;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .location__item:hover {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .location__item:hover:not(.item__active) {
@@ -65,4 +65,3 @@
 .location__list::-webkit-scrollbar {
     width: 0.25em;
 }
-

@@ -16,10 +16,9 @@ import './App.css';
 class App extends React.Component<any, any> {
 	state: any = {
 		userLocation: { lat: 39.828175, lng: -98.5795 }, //Geographic Center of the United States
-		randomLocation: null,
 		activeLocation: null,
 		locationHistory: [], //List of random locations
-		range: 10, //Min max 10k 999k
+		range: 50, //Min max 10k 999k
 		isFetching: false,
 		sidebarShow: true,
 		mapApiLoaded: false,
@@ -40,7 +39,8 @@ class App extends React.Component<any, any> {
 		});
 	}
 
-	giveGeoLocation() {
+	//Navigator method to get geolocation
+	getGeoLocation() {
 		navigator.geolocation.getCurrentPosition((position: Position) => {
 			this.setState({
 				userLocation: {
@@ -67,7 +67,7 @@ class App extends React.Component<any, any> {
 		})
 	}
 
-	setCurrentLocation(latitude, longitude, id) {
+	setActiveLocation(latitude, longitude, id) {
 		const { mapInstance } = this.state;
 		this.setState({
 			randomLocation: {
@@ -81,6 +81,17 @@ class App extends React.Component<any, any> {
 			lng: parseFloat(longitude),
 		})
 
+	}
+
+	deleteLocation (id:any) {
+		const filtered = this.state.locationHistory.filter((location:any) => {
+			return location.id !== id
+		})
+		console.log(filtered);
+		this.setState({
+			locationHistory: filtered,
+			activeLocation: null,
+		})
 	}
 
 	async getRandomLocation() {
@@ -123,7 +134,7 @@ class App extends React.Component<any, any> {
 					display: "grid",
 					gridTemplateColumns: "minmax(300px,25%)1fr"
 				}}>
-					<div style={{ padding: "20px" }}>
+					<div style={{ padding: "1.25em" }}>
 						{mapApiLoaded &&
 							<AutoCompleter
 								map={mapInstance}
@@ -131,7 +142,7 @@ class App extends React.Component<any, any> {
 								placeHolder="City, street or address"
 								label="Enter a location"
 								addPlace={(place: any) => this.setUserLocation(place)}
-								onIconClick={() => this.giveGeoLocation()}
+								onIconClick={() => this.getGeoLocation()}
 							/>
 						}
 						<Slider
@@ -154,7 +165,8 @@ class App extends React.Component<any, any> {
 											isActive={this.state.activeLocation === location.id}
 											latitude={location.lat}
 											longitude={location.lng}
-											onClick={() => this.setCurrentLocation(location.lat, location.lng, location.id)}
+											onClick={() => this.setActiveLocation(location.lat, location.lng, location.id)}
+											onDoubleClick={() => this.deleteLocation(location.id)}
 										/>
 									);
 								})}
@@ -162,7 +174,7 @@ class App extends React.Component<any, any> {
 						}
 					</div>
 					<GoogleMap
-						//Map center is controlled by the maps api not state
+						//Map center is controlled by the maps api not React state
 						apiKey={API_KEY}
 						onLoad={({ map, maps }: any) => this.apiHasLoaded(map, maps)}
 						zoom={4}

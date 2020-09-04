@@ -25,6 +25,7 @@ export const Location = (props: any) => {
         <li 
             className={`location__item ${props.isActive && "item__active"}`} 
             onClick={(event) => beforeOnClick(event)} 
+            onDoubleClick={props.onDoubleClick}
         >
             <p>
                 <MarkerIcon className="location__item__icon marker__icon" />
