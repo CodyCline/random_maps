@@ -1,4 +1,6 @@
 import * as React from 'react';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { Layout } from './components/layout/layout';
 import { GoogleMap } from './components/map/map';
 import { Marker } from './components/marker/marker';
@@ -7,11 +9,9 @@ import { AutoCompleter } from './components/autocomplete/autocomplete';
 import { Button } from './components/button/button';
 import { LocationList, Location } from './components/locationlist/locationlist';
 import { Loader } from './components/loader/loader';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+import { DirectionBar } from './components/directionbar/directionbar';
 import 'react-tippy/dist/tippy.css'
 import './App.css';
-
 
 class App extends React.Component<any, any> {
 	state: any = {
@@ -84,14 +84,12 @@ class App extends React.Component<any, any> {
 	}
 
 	deleteLocation (id:any) {
-		const filtered = this.state.locationHistory.filter((location:any) => {
-			return location.id !== id
-		})
-		console.log(filtered);
-		this.setState({
-			locationHistory: filtered,
+		this.setState((prevState:any) => ({
+			locationHistory: prevState.locationHistory.filter((location:any) => {
+				return location.id !== id;
+			}),
 			activeLocation: null,
-		})
+		}));
 	}
 
 	async getRandomLocation() {
@@ -178,7 +176,8 @@ class App extends React.Component<any, any> {
 						apiKey={API_KEY}
 						onLoad={({ map, maps }: any) => this.apiHasLoaded(map, maps)}
 						zoom={4}
-						defaultCenter={{ lat: userLocation.lat, lng: userLocation.lng }}
+						defaultCenter={{ lat: 39.828175, lng: -98.5795 }} //Geographic Center of the United States
+						center={{ lat: userLocation.lat, lng: userLocation.lng}}
 					>
 						<Marker
 							text="Your Location"
@@ -189,7 +188,7 @@ class App extends React.Component<any, any> {
 							this.state.activeLocation &&
 							<Marker
 								text="Random Location"
-								lat={randomLocation.lat}
+								lat={locationHistory.lat}
 								lng={randomLocation.lng}
 							/>
 						}

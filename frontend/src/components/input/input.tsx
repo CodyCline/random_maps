@@ -16,6 +16,7 @@ export const Input = React.forwardRef((props: any, ref: any) => {
                     value={props.value}
                     onBlur={props.onBlur}
                     onChange={props.onChange}
+                    placeholder={props.placeHolder}
                 />
                 <Tooltip className="tooltip__override" offset={-20} distance={20} title="Give location" position="top" trigger="mouseenter">
                     <Globe onClick={props.onIconClick} className="input__icon" />

@@ -45,7 +45,7 @@ export const AutoCompleter = ({
     return (
         <div>
             <Input ref={searchRef}  
-                placeholder={placeHolder}
+                placeHolder={placeHolder}
                 label={label}
                 onIconClick={onIconClick}
             />

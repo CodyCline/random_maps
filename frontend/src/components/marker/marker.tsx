@@ -6,7 +6,7 @@ export const Marker = ({ text }: any) => (
 		color: "white",
 		fontSize:"1.5rem",
 		padding: "15px 10px",
-		position: "fixed",
+		position: "relative",
 	}}>
 		<Icon style={{height: "50px", width: "50px"}}/>
 		{text}
