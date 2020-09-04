@@ -21,6 +21,12 @@
     cursor: pointer
 }
 
+/* When hovering over single icon blur the others */
+.direction__bar:hover .direction__option:not(:hover) {
+    opacity: 0.5;
+    transition: 0.25s ease-in-out;
+}
+
 .google__logo {
     background: white;
 }

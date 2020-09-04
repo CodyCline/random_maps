@@ -20,7 +20,7 @@ export const DirectionBar = ({to, from} : any) => {
             case "google":
                 return `https://www.google.com/maps/dir/${fromLocation.lat},${fromLocation.lng}/${toLocation.lat},${toLocation.lng}`;
             case "waze":
-                return `https://waze.com/ul?q=${toLocation.lat},${toLocation.lng}&ll=${fromLocation.lat},${fromLocation.lng}&navigate=yes`;
+                return `https://waze.com/ul?ll=${toLocation.lat},${toLocation.lng}&from=${fromLocation.lat},${fromLocation.lng}&navigate=yes`;
             case "apple":
                 return `http://maps.apple.com/?saddr=${fromLocation.lat},${fromLocation.lng}&daddr=${toLocation.lat},${toLocation.lng}`;
             case "bing":
