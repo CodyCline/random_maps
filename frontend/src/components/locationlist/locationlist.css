@@ -41,20 +41,30 @@
 }
 
 .location__item:hover:not(.item__active) {
-    border-color: #6c10d1;
+    border-color: #43e5f7;
 }
 
 .location__item__icon {
     height: 1em;
     width: 1em;
+    bottom: 10px;
 }
 
 .map__icon {
     color: green;
+    transition: 0.5s ease-in-out;
+}
+
+.map__icon:hover {
+    color: greenyellow;
 }
 
 .copy__icon {
     color: #6c10d1;
+}
+
+.copy__icon:hover {
+    color: #8c54c7;
 }
 
 .marker__icon {

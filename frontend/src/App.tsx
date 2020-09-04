@@ -9,7 +9,6 @@ import { AutoCompleter } from './components/autocomplete/autocomplete';
 import { Button } from './components/button/button';
 import { LocationList, Location } from './components/locationlist/locationlist';
 import { Loader } from './components/loader/loader';
-import { DirectionBar } from './components/directionbar/directionbar';
 import 'react-tippy/dist/tippy.css'
 import './App.css';
 
@@ -159,6 +158,7 @@ class App extends React.Component<any, any> {
 								{locationHistory.map((location: any) => {
 									return (
 										<Location
+											userLocation={userLocation}
 											key={location.id}
 											isActive={this.state.activeLocation === location.id}
 											latitude={location.lat}

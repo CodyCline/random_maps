@@ -38,7 +38,10 @@ export const Location = (props: any) => {
             </p>
             <Tooltip
                 html={
-                    <DirectionBar />
+                    <DirectionBar 
+                        to={{lat: props.latitude, lng: props.longitude}}
+                        from={props.userLocation}
+                    />
                 }
                 interactive
                 style={{margin: 0}}
