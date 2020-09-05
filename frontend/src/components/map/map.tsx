@@ -11,7 +11,7 @@ export const GoogleMap = ({
     zoom,
     onLoad,
     isLoading,
-} :any) => {
+}: any) => {
     const createMapOptions = () => {
         return {
             styles: MapTheme,
@@ -21,9 +21,9 @@ export const GoogleMap = ({
         <div style={{ height: "100vh", width: "100%" }}>
             <GoogleMapReact
                 yesIWantToUseGoogleMapApiInternals
-                bootstrapURLKeys={{ 
-                    key: apiKey, 
-                    libraries: ["places", "geometry"], 
+                bootstrapURLKeys={{
+                    key: apiKey,
+                    libraries: ["places", "geometry"],
                 }}
                 defaultCenter={defaultCenter}
                 center={center}

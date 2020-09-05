@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactComponent as GithubIcon } from './github.svg';
 import './layout.css';
 
 export const Layout = ({ children }: any) => {
@@ -20,6 +21,6 @@ const Navigation = () => (
 
 const Footer = () => (
     <footer className="footer">
-
+        <GithubIcon style={{height: "2em", width: "2em"}}/>
     </footer>
 );

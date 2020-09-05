@@ -12,6 +12,8 @@ import { Loader } from './components/loader/loader';
 import 'react-tippy/dist/tippy.css'
 import './App.css';
 
+declare const window : any;
+
 class App extends React.Component<any, any> {
 	state: any = {
 		userLocation: { lat: 39.828175, lng: -98.5795 }, //Geographic Center of the United States
@@ -123,7 +125,7 @@ class App extends React.Component<any, any> {
 
 	render() {
 		const API_KEY: any = process.env.REACT_APP_GOOGLE_MAPS_KEY;
-		const { userLocation, randomLocation, locationHistory, range, mapApiLoaded, mapInstance, mapApi } = this.state;
+		const { userLocation, maps, randomLocation, locationHistory, range, mapApiLoaded, mapInstance, mapApi } = this.state;
 		return (
 			<Layout>
 				<div style={{
@@ -179,6 +181,7 @@ class App extends React.Component<any, any> {
 						defaultCenter={{ lat: 39.828175, lng: -98.5795 }} //Geographic Center of the United States
 						center={{ lat: userLocation.lat, lng: userLocation.lng}}
 					>
+						
 						<Marker
 							text="Your Location"
 							lat={userLocation.lat}
@@ -188,7 +191,7 @@ class App extends React.Component<any, any> {
 							this.state.activeLocation &&
 							<Marker
 								text="Random Location"
-								lat={locationHistory.lat}
+								lat={randomLocation.lat}
 								lng={randomLocation.lng}
 							/>
 						}

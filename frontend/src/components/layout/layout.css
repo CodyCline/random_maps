@@ -16,6 +16,10 @@
 }
 
 .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: #171819;
-    height: 4em;
+    height: 3em;
 }

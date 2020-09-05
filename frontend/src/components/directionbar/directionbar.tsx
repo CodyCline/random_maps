@@ -47,8 +47,8 @@ export const DirectionBar = ({to, from} : any) => {
                 </a>
             </li>
             <li className="direction__option">
-            <a href={generateMapLink("bing", to, from)} target="_blank" rel="noopener noreferrer">
-                <Bing className="direction__logo google__logo"/>
+                <a href={generateMapLink("bing", to, from)} target="_blank" rel="noopener noreferrer">
+                    <Bing className="direction__logo bing__logo"/>
                 </a>
             </li>
         </ul>
