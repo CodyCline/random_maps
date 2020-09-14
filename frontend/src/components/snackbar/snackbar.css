@@ -1,0 +1,21 @@
+.snackbar {
+    min-width: 350px;
+    margin-left: -175px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 1rem;
+}
+
+
+.error__icon {
+    margin-right: 0.75em;
+    color: #a3102d;
+    height: 1em;
+    width: 1em;
+}

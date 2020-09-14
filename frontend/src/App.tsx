@@ -1,6 +1,7 @@
 import * as React from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import { getPosition } from './asyncLocation';
 import { Layout } from './components/layout/layout';
 import { GoogleMap } from './components/map/map';
 import { Marker } from './components/marker/marker';
@@ -8,11 +9,10 @@ import { Slider } from './components/slider/slider';
 import { AutoCompleter } from './components/autocomplete/autocomplete';
 import { Button } from './components/button/button';
 import { LocationList, Location } from './components/locationlist/locationlist';
+import { SnackBar } from './components/snackbar/snackbar';
 import { Loader } from './components/loader/loader';
 import 'react-tippy/dist/tippy.css'
 import './App.css';
-
-declare const window : any;
 
 class App extends React.Component<any, any> {
 	state: any = {
@@ -21,10 +21,11 @@ class App extends React.Component<any, any> {
 		locationHistory: [], //List of random locations
 		range: 50, //Min max 10k 999k
 		isFetching: false,
-		sidebarShow: true,
 		mapApiLoaded: false,
 		mapInstance: null,
 		mapApi: null,
+		errors: false,
+		errorMessage: null,
 	}
 	apiHasLoaded(map: any, maps: any) {
 		this.setState({
@@ -40,24 +41,6 @@ class App extends React.Component<any, any> {
 		});
 	}
 
-	//Navigator method to get geolocation
-	getGeoLocation() {
-		navigator.geolocation.getCurrentPosition((position: Position) => {
-			this.setState({
-				userLocation: {
-					lat: position.coords.latitude,
-					lng: position.coords.longitude,
-				},
-				zoom: 17
-			});
-			this.state.mapInstance.setCenter({
-				...this.state.userLocation,
-			})
-		}, (error: PositionError) => {
-			console.log("ERROR\n", error);
-		})
-	}
-
 	//Internal google maps function
 	setUserLocation(place: any) {
 		this.setState({
@@ -71,11 +54,11 @@ class App extends React.Component<any, any> {
 	setActiveLocation(latitude, longitude, id) {
 		const { mapInstance } = this.state;
 		this.setState({
-			randomLocation: {
+			activeLocation: {
 				lat: latitude,
 				lng: longitude,
+				id: id,
 			},
-			activeLocation: id,
 		})
 		mapInstance.setCenter({
 			lat: parseFloat(latitude),
@@ -84,9 +67,9 @@ class App extends React.Component<any, any> {
 
 	}
 
-	deleteLocation (id:any) {
-		this.setState((prevState:any) => ({
-			locationHistory: prevState.locationHistory.filter((location:any) => {
+	deleteLocation(id: string) {
+		this.setState((prevState: any) => ({
+			locationHistory: prevState.locationHistory.filter((location: any) => {
 				return location.id !== id;
 			}),
 			activeLocation: null,
@@ -94,46 +77,74 @@ class App extends React.Component<any, any> {
 	}
 
 	async getRandomLocation() {
-		const { mapInstance } = this.state;
-		const newLocationId = uuidv4();
-		this.setState({ isFetching: true });
-		const res = await axios.get("http://localhost:5000/location", {
-			params: {
-				latitude: this.state.userLocation.lat,
-				longitude: this.state.userLocation.lng,
-				mean: (this.state.range * 1000),
-			}
-		})
-		this.setState({
-			locationHistory: [
-				...this.state.locationHistory,
-				{ id: newLocationId, lat: res.data.latitude, lng: res.data.longitude },
-			],
-			activeLocation: newLocationId,
-			randomLocation: {
+		try {
+			const { mapInstance } = this.state;
+			const newLocationId = uuidv4();
+			this.setState({ isFetching: true });
+			const res : AxiosResponse = await axios.get("http://localhost:5000/location", {
+				params: {
+					latitude: this.state.userLocation.lat,
+					longitude: this.state.userLocation.lng,
+					mean: (this.state.range * 1000),
+				}
+			})
+			this.setState((prevState: any) => ({
+				locationHistory: [
+					...prevState.locationHistory,
+					{ id: newLocationId, lat: res.data.latitude, lng: res.data.longitude },
+				],
+				activeLocation: {
+					lat: res.data.latitude,
+					lng: res.data.longitude,
+					id: newLocationId,
+				},
+				isFetching: false,
+			}));
+			mapInstance.setCenter({
 				lat: res.data.latitude,
 				lng: res.data.longitude,
-			},
-			isFetching: false,
-		})
-		mapInstance.setCenter({
-			lat: res.data.latitude,
-			lng: res.data.longitude,
-		});
-		mapInstance.setZoom(12);
+			});
+			mapInstance.setZoom(12);
+		} catch (error) {
+			console.log(error);
+			this.setState({
+				isFetching: false,
+				error: true,
+				errorMessage: "Error getting random location, try again later"
+			})
+		}
+	}
+
+	//Navigator method to get geolocation
+	async getGeoLocation() {
+		try {
+			const position : Position = await getPosition();
+			this.setState({
+				userLocation: {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude,
+				},
+				zoom: 17
+			});
+			this.state.mapInstance.setCenter({
+				...this.state.userLocation,
+			})
+		} catch (error) {
+			console.log(error);
+			this.setState({
+				error: true,
+				errorMessage: "Error could not get your location",
+			})
+		}
 	}
 
 	render() {
 		const API_KEY: any = process.env.REACT_APP_GOOGLE_MAPS_KEY;
-		const { userLocation, maps, randomLocation, locationHistory, range, mapApiLoaded, mapInstance, mapApi } = this.state;
+		const { userLocation, activeLocation, locationHistory, range, mapApiLoaded, mapInstance, mapApi } = this.state;
 		return (
 			<Layout>
-				<div style={{
-					background: "#232429",
-					display: "grid",
-					gridTemplateColumns: "minmax(300px,25%)1fr"
-				}}>
-					<div style={{ padding: "1.25em" }}>
+				<div className="app__container">
+					<div className="app__sidebar">
 						{mapApiLoaded &&
 							<AutoCompleter
 								map={mapInstance}
@@ -162,7 +173,7 @@ class App extends React.Component<any, any> {
 										<Location
 											userLocation={userLocation}
 											key={location.id}
-											isActive={this.state.activeLocation === location.id}
+											isActive={activeLocation && activeLocation.id === location.id}
 											latitude={location.lat}
 											longitude={location.lng}
 											onClick={() => this.setActiveLocation(location.lat, location.lng, location.id)}
@@ -179,24 +190,24 @@ class App extends React.Component<any, any> {
 						onLoad={({ map, maps }: any) => this.apiHasLoaded(map, maps)}
 						zoom={4}
 						defaultCenter={{ lat: 39.828175, lng: -98.5795 }} //Geographic Center of the United States
-						center={{ lat: userLocation.lat, lng: userLocation.lng}}
+						center={{ lat: userLocation.lat, lng: userLocation.lng }}
 					>
-						
+
 						<Marker
 							text="Your Location"
 							lat={userLocation.lat}
 							lng={userLocation.lng}
 						/>
-						{
-							this.state.activeLocation &&
+						{activeLocation &&
 							<Marker
 								text="Random Location"
-								lat={randomLocation.lat}
-								lng={randomLocation.lng}
+								lat={activeLocation.lat}
+								lng={activeLocation.lng}
 							/>
 						}
 					</GoogleMap>
 				</div>
+				<SnackBar show={this.state.error} message={this.state.errorMessage || "Error something went wrong"} />
 			</Layout>
 		)
 	}

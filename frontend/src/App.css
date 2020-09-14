@@ -7,3 +7,13 @@
 		"Droid Sans", "Helvetica Neue", sans-serif;
 	background: #171819;
 }
+
+.app__container {
+	background: #232429;
+	display: grid;
+	grid-template-columns: minmax(300px,25%)1fr;
+}
+
+.app__sidebar {
+	padding: 1.25em; 
+}
