@@ -1,9 +1,12 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import { Tooltip} from 'react-tippy';
 import { ReactComponent as Globe } from './globe.svg';
 import './input.css';
 
-export const Input = React.forwardRef((props: any, ref: any) => {
+export type Ref = HTMLInputElement;
+
+export const Input = React.forwardRef<Ref, types.InputProps>((props, ref) => {
     return (
         <div className="input__block">
             <label>{props.label}</label>

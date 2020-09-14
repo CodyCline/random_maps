@@ -1,7 +1,8 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import './slider.css';
 
-export const Slider = ({min, max, value, onChange, style, label}: any) => {
+export const Slider = ({min, max, value, onChange, style, label}: types.SliderProps) => {
     return (
         <div>
             <label>{label}</label>

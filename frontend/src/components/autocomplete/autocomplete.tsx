@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import { Input } from '../input/input';
 import './autocomplete.css';
 
-export const AutoCompleter = ({ 
+export const AutoComplete = ({ 
     map, 
     mapApi, 
     addPlace, 
@@ -10,7 +11,7 @@ export const AutoCompleter = ({
     options, 
     label, 
     onIconClick,
-}: any) => {
+}: types.AutoCompleteProps) => {
     const searchRef = React.useRef<any>(null);
     const infopanelRef = React.useRef<any>(null);
     let autoComplete: any;

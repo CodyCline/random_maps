@@ -6,7 +6,7 @@ import { Layout } from './components/layout/layout';
 import { GoogleMap } from './components/map/map';
 import { Marker } from './components/marker/marker';
 import { Slider } from './components/slider/slider';
-import { AutoCompleter } from './components/autocomplete/autocomplete';
+import { AutoComplete } from './components/autocomplete/autocomplete';
 import { Button } from './components/button/button';
 import { LocationList, Location } from './components/locationlist/locationlist';
 import { SnackBar } from './components/snackbar/snackbar';
@@ -146,7 +146,7 @@ class App extends React.Component<any, any> {
 				<div className="app__container">
 					<div className="app__sidebar">
 						{mapApiLoaded &&
-							<AutoCompleter
+							<AutoComplete
 								map={mapInstance}
 								mapApi={mapApi}
 								placeHolder="City, street or address"
@@ -187,7 +187,7 @@ class App extends React.Component<any, any> {
 					<GoogleMap
 						//Map center is controlled by the maps api not React state
 						apiKey={API_KEY}
-						onLoad={({ map, maps }: any) => this.apiHasLoaded(map, maps)}
+						onLoad={({ map, maps }) => this.apiHasLoaded(map, maps)}
 						zoom={4}
 						defaultCenter={{ lat: 39.828175, lng: -98.5795 }} //Geographic Center of the United States
 						center={{ lat: userLocation.lat, lng: userLocation.lng }}

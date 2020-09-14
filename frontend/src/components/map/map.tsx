@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import GoogleMapReact from 'google-map-react';
 import { MapTheme } from './theme';
 

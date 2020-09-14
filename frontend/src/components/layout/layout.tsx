@@ -1,8 +1,11 @@
 import * as React from 'react';
+import * as types from '../../types/components';
+import { Tooltip } from 'react-tippy';
 import { ReactComponent as GithubIcon } from './github.svg';
 import './layout.css';
 
-export const Layout = ({ children }: any) => {
+
+export const Layout = ({ children }: types.PureComponent) => {
     return (
         <main>
             <Navigation />
@@ -21,7 +24,15 @@ const Navigation = () => (
 
 const Footer = () => (
     <footer className="footer">
-        <GithubIcon style={{height: "2em", width: "2em"}}/>
-        <p>codycline</p>
+        <Tooltip title="View source" trigger="mouseenter" position="top">
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/codycline/random_maps">
+                <GithubIcon style={{height: "1.5em", width: "1.5em"}}/>
+            </a>
+        </Tooltip>
+        <Tooltip title="Author website" trigger="mouseenter" position="top">
+            <a target="_blank" rel="noopener noreferrer" href="https://codycline.com">
+                cody cline
+            </a>
+        </Tooltip>
     </footer>
 );

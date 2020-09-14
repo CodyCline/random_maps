@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import { Tooltip } from 'react-tippy';
 import { ReactComponent as MapIcon } from './map.svg';
 import { ReactComponent as MarkerIcon } from './map-marker.svg';
@@ -11,7 +12,7 @@ export const LocationList = ({ children }: any) => (
 )
 
 
-export const Location = (props: any) => {
+export const Location = (props: types.LocationProps) => {
     const iconRef = React.useRef<any>(null);
     const [isShown, showBar] = React.useState(false);
     const toggleBar = () => {

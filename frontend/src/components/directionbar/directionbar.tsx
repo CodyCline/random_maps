@@ -1,19 +1,12 @@
 import * as React from 'react';
+import * as types from '../../types/components';
 import { ReactComponent as GoogleMaps } from './google-maps-logo.svg';
 import { ReactComponent as Waze } from './waze.svg';
 import { ReactComponent as Apple } from './apple.svg';
 import { ReactComponent as Bing } from './bing.svg';
 import './directionbar.css';
 
-//Directions automatically redirects the user to a map platform of their choice with driving directions
-enum PlatformOptions {
-    "google",
-    "waze",
-    "apple",
-    "bing",
-}
-
-export const DirectionBar = ({to, from} : any) => {
+export const DirectionBar = ({to, from} : types.DirectionBarProps) => {
     //Generate links to different map applications will open the mobile app if on mobile device.
     const generateMapLink = (platform, toLocation, fromLocation) => {
         switch (platform) {
