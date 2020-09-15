@@ -1,20 +1,20 @@
-import {v4 as uuid} from 'uuid';
+import { Coordinates } from './components';
 
-type UUID = string;
-type Coordinate = (string | number);
-
-
-export interface Location {
-    id: UUID,
-    lat: Coordinate
-    lng: Coordinate
+export interface ILocation {
+    id: string,
+    lat: string | number,
+    lng: string | number
 }
 
-
-interface IState {
-    userLocation: {
-        lat: Coordinate,
-        lng: Coordinate,
-    },
-
+export interface AppState {
+    userLocation: Coordinates,
+    activeLocation: ILocation | null,
+    locationHistory: ILocation[],
+    range: number,
+    isFetching: boolean,
+    mapInstance: any,
+    mapApi: any,
+    mapApiLoaded: boolean,
+    error: boolean,
+    errorMessage: string | null,
 }

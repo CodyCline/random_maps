@@ -37,7 +37,7 @@ export interface LocationProps {
     userLocation: Coordinates,
     onClick?: any,
     onDoubleClick: (event:any) => void,
-    isActive: boolean,
+    isActive: any,
     latitude: any,
     longitude: any,
 }

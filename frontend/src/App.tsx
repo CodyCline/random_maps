@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AppState } from './types/state';
 import axios, { AxiosResponse } from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { getPosition } from './asyncLocation';
@@ -15,7 +16,7 @@ import 'react-tippy/dist/tippy.css'
 import './App.css';
 
 class App extends React.Component<any, any> {
-	state: any = {
+	state: AppState = {
 		userLocation: { lat: 39.828175, lng: -98.5795 }, //Geographic Center of the United States
 		activeLocation: null,
 		locationHistory: [], //List of random locations
@@ -24,7 +25,7 @@ class App extends React.Component<any, any> {
 		mapApiLoaded: false,
 		mapInstance: null,
 		mapApi: null,
-		errors: false,
+		error: false,
 		errorMessage: null,
 	}
 	apiHasLoaded(map: any, maps: any) {

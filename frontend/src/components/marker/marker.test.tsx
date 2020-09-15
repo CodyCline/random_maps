@@ -1,9 +1,9 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import { Button } from './button';
+import { Marker } from './marker';
 
-let container:any = null;
+let container: any = <div/>;
 beforeEach(() => {
 	// setup a DOM element as a render target
 	container = document.createElement("div");
@@ -14,19 +14,13 @@ afterEach(() => {
 	// cleanup on exiting
 	unmountComponentAtNode(container);
 	container.remove();
-	container = null;
 });
 
 
-it("renders with or without a name", () => {
-	const message = "HELLO"
+it("renders a marker with title, coordinates", () => {
+	const testText = "Random Location"
 	act(() => {
-		render(<Button></Button>, container);
+		render(<Marker text={testText} lat={39.8131} lng={39.1132} />, container);
 	});
-	expect(container.textContent).toBe("");
-
-	act(() => {
-		render(<Button>{message}</Button>, container);
-	})
-	expect(container.textContent).toBe(message);
+    expect(container.textContent).toBe(testText);
 });
