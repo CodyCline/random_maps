@@ -2,8 +2,17 @@ import requests
 import random
 import math
 import json
-from flask import Flask, request
+from flask import Flask, request, abort
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
+
+def within_range(num):
+    if num in range(10000, 999999):
+        return True
+    else:
+        return False
+
 
 #Get array of quantum numbers combine into long seed
 def quantum_seed():
@@ -36,18 +45,23 @@ def trim(lat, lon):
 
 @app.route("/location")
 def location():
-    seed = quantum_seed()
-    print(request.args.get("latitude"), request.args.get("longitude"))
     mean = float(request.args.get("mean"))
-    v = 1000000.0 #Constant for dividing to nearest hundred thousandths place
-    coords = trim(float(request.args.get("latitude")), float(request.args.get("longitude")))
-    latitude = int(gauss(coords["latitude"], mean, seed))
-    longitude = int(gauss(coords["longitude"], mean, seed))   
+    if within_range(mean):
+        v = 1000000.0 #Constant for dividing to nearest hundred thousandths place
+        coords = trim(float(request.args.get("latitude")), float(request.args.get("longitude")))
+        latitude = float(gauss(coords["latitude"], mean, quantum_seed()))
+        longitude = float(gauss(coords["longitude"], mean, quantum_seed()))
     
-    return ({
-        "latitude": latitude / v,
-        "longitude": longitude / v,
-    })
+        return ({
+            "success": True,
+            "latitude": latitude / v,
+            "longitude": longitude / v,
+        })
+    else:
+        abort(400, {
+            "success": False,
+            "message": "bad request, check your parameters",
+        })
 
 
 
